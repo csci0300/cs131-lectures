@@ -27,8 +27,14 @@ a.out
 core*
 cmake-build-*
 cscope.out
+pset.tgz
 strace.out
 tags
 tags.*
 typescript
 vgcore*
+
+evil
+os[0-9][0-9].img
+testqs
+testqs[0-9]
