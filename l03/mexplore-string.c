@@ -33,7 +33,7 @@ void f() {
     //  }
     //}
 
-    char* allocated_st = (char*)malloc(100);
+    char* allocated_st = malloc(100);
     sprintf(allocated_st, "We <3 systems");
 
     // this works!

@@ -13,7 +13,7 @@ char* f() {
     hexdump(&const_global_ch, 1);
     hexdump(&local_ch, 1);
 
-    char* allocated_ch = (char*)malloc(1);
+    char* allocated_ch = malloc(1);
     *allocated_ch = 'D';
 
     return allocated_ch;
