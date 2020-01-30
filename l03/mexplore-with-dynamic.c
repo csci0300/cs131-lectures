@@ -6,7 +6,7 @@
 char global_ch = 'A';
 const char const_global_ch = 'B';
 
-void f() {
+char* f() {
     char local_ch = 'C';
 
     hexdump(&global_ch, 1);
@@ -15,10 +15,12 @@ void f() {
 
     char* allocated_ch = (char*)malloc(1);
     *allocated_ch = 'D';
+
+    return allocated_ch;
 }
 
 int main() {
-    f();
+    char* c = f();
 
-    //hexdump(allocated_ch, 1);
+    hexdump(c, 1);
 }
