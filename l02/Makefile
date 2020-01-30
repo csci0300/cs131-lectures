@@ -1,3 +1,4 @@
+CC=clang
 PROGRAMS = mexplore mexplore-with-dynamic mexplore-string add addin
 all: $(PROGRAMS)
 
