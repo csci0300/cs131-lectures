@@ -3,20 +3,49 @@
 #include <assert.h>
 #include "hexdump.h"
 
+//                | static, const global string; in static segment
+//                | of memory (= static lifetime).
+//                | (can't be modified, because it's in the constant
+//                | section of the static memor segment)
+//                v
 char* global_st = "Hello CS131!";
 
 void f() {
+    hexdump(global_st, 13);
+
+    //               | static, const string (read-only).
+    //               | Literal strings are in the read-only section of
+    //               | the static lifetime memory segment.
+    //               | The *address* local_st is a local variable, but
+    //               | right hand side is an address in the read-only
+    //               | section, so local_st will *point* to the read-only
+    //               | segment.
+    //               v
     char* local_st = "We <3 systems";
+    hexdump(local_st, 15);
 
-    hexdump(global_st, 1);
-    hexdump(local_st, 1);
+    // This segfaults (as it did in the lecture) because it tries to
+    // modify a ready-only literal string.
+    //for (int i = 0; i < 13; i++) {
+    //  if (*(local_st + i) == '<') {
+    //    *(local_st + i) = '>';
+    //  }
+    //}
 
-    //char* allocated_st = (char*)malloc(1);
-    //sprintf(allocated_st, "C programming is cool");
+    char* allocated_st = (char*)malloc(100);
+    sprintf(allocated_st, "We <3 systems");
+
+    // this works!
+    for (int i = 0; i < 13; i++) {
+      if (*(allocated_st + i) == '<') {
+        *(allocated_st + i) = 'E';
+        *(allocated_st + i + 1) = '>';
+      }
+    }
+
+    hexdump(allocated_st, 15);
 }
 
 int main() {
     f();
-
-    //hexdump(allocated_st, strlen(allocated_st));
 }
