@@ -1,4 +1,5 @@
 CC = clang
+O = 0
 PROGRAMS = mexplore mexplore-with-dynamic mexplore-string mexplore-uninitialized mexplore-array
 all: $(PROGRAMS)
 
@@ -10,7 +11,7 @@ include ../common/rules.mk
 	$(CC) $(CPPFLAGS) $(CFLAGS) $(O) $(DEPCFLAGS) -o $@ -c $<
 
 mexplore mexplore-with-dynamic mexplore-string mexplore-uninitialized mexplore-array: %: %.o hexdump.o
-	$(CC) $(CFLAGS) $(LDFLAGS) -O3 -o $@ $^
+	$(CC) $(CFLAGS) $(LDFLAGS) -O0 -o $@ $^
 
 clean:
 	rm -rf $(ALLPROGRAMS) *.o $(DEPSDIR)
