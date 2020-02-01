@@ -26,3 +26,4 @@ Some questions we resolved, for reference:
   the example)
 * How does pointer arithmetic work?
 * How are pointers and arrays related?
+* How do you use `gdb` to track down a segfault?
