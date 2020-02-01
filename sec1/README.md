@@ -6,11 +6,11 @@ memory and pointers to achieve this.
 
 To compile, use:
 ```
-$ clang -o examples examples.c
+$ clang -o examples examples.c -g
 ```
 or
 ```
-$ gcc -o examples examples.c
+$ gcc -o examples examples.c -g
 ```
 In the section, we used `clang` because it makes the difference between
 stack addresses (in the automatic segment of memory) and heap addresses
