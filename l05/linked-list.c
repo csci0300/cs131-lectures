@@ -45,5 +45,7 @@ int main() {
 
   printf("sizeof(list_node_t): %lu\n", sizeof(list_node_t));
 
+  // NOTE: this program leaks memory, because it only deletes the list, not
+  // the individual nodes. -fsanitize=leak will tell you :)
   free(l);
 }
