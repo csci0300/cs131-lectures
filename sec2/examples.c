@@ -27,9 +27,9 @@ int main() {
   *(ptr + 2) = 3;
 
   // by pointer arithmetic, this is equivalent to:
-  // &(*(ptr + 2))
+  // int* ptr2 = &(*(ptr + 2));
   // or indeed
-  // &(*((char*)ptr + sizeof(int) * 2))
+  // int* ptr2 = &(*((char*)ptr + sizeof(int) * 2))
   // it's just a lot easier to read!
   int* ptr2 = &ptr[2];
 
@@ -45,6 +45,7 @@ int main() {
   // list_node_t. They struct return the same address and value.
   printf("%p: %d\n", &(node->value), node->value);
   printf("%p: %d\n", &((*node).value), (*node).value);
+  // casting `node` to char* so that we can do pointer arithmetic in units of 1 byte
   printf("%p: %d\n", ((char*)node + 0), *((char*)node + 0));
 
   // these are all different ways of accessing the "next" member and
