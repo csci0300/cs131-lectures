@@ -42,7 +42,7 @@ int main() {
   node->value = 123;
 
   // these are all different ways of accessing the "value" member of a
-  // list_node_t. They struct return the same address and value.
+  // list_node_t. They each return the same address and value.
   printf("%p: %d\n", &(node->value), node->value);
   printf("%p: %d\n", &((*node).value), (*node).value);
   // casting `node` to char* so that we can do pointer arithmetic in units of 1 byte
