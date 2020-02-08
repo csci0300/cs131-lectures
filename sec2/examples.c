@@ -27,7 +27,9 @@ int main() {
   *(ptr + 2) = 3;
 
   // by pointer arithmetic, this is equivalent to:
-  // &(*(ptr + sizeof(int) * 2))
+  // &(*(ptr + 2))
+  // or indeed
+  // &(*((char*)ptr + sizeof(int) * 2))
   // it's just a lot easier to read!
   int* ptr2 = &ptr[2];
 
