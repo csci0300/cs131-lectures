@@ -51,7 +51,8 @@ int main() {
   // return the same address and value.
   printf("%p: %d\n", &(node->next), node->value);
   printf("%p: %d\n", &((*node).next), (*node).value);
-  printf("%p: %d\n", ((char*)node + 8), *((char*)node + 0));
+  // byte offset is 8 due to alignment constraints on pointers!
+  printf("%p: %d\n", ((char*)node + 8), *((char*)node + 8));
 
   free(ptr);
   free(node);
