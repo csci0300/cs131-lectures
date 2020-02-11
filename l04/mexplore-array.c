@@ -26,7 +26,7 @@ void f() {
     arr2[3] = 17;
     arr2[4] = 0;
 
-    hexdump(arr2, sizeof(arr));
+    hexdump(arr2, sizeof(arr2));
 }
 
 int main() {
