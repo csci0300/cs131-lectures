@@ -74,6 +74,6 @@ clean:
 	rm -f $(ALLPROGRAMS) *.o
 
 cleanasm: clean
-	rm -f $(patsubst %.c,%.s,$(wildcard f*.c))
+	rm -f $(patsubst %.c,%.s,$(wildcard asm*.c))
 
 .PHONY: all clean cleanasm asm
