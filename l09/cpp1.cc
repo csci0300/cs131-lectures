@@ -15,6 +15,9 @@ class Animal {
   }
 
   void setWeight(int weight) {
+    if (weight < 0) {
+      printf("error\n");
+    }
     this->weight_ = weight;
   }
 
@@ -39,16 +42,16 @@ void herd_animals() {
   printf("name: %s, age: %d, weight: %d\n", stack_a.name_, stack_a.age_, stack_a.getWeight());
 
   // makes a new heap-allocated instance of class Animal
-  //Animal* heap_a = new Animal("bob", 5);
-  //heap_a->name_ = "chunky bob";
+  Animal* heap_a = new Animal("bob", 5);
+  heap_a->name_ = "chunky bob";
 
   // won't work, because weight_ is a private member
   //heap_a->weight_ = 99;
   //
   // need to use getName() because name_ is a private member
-  //heap_a->setWeight(99);
-  //
-  //printf("name: %s, weight: %d\n", heap_a->name_, heap_a->getWeight());
+  heap_a->setWeight(99);
+
+  printf("name: %s, weight: %d\n", heap_a->name_, heap_a->getWeight());
 }
 
 int main() {
