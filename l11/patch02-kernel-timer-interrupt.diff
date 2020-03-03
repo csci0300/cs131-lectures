@@ -1,0 +1,25 @@
+diff --git a/l11/kernel.cc b/l11/kernel.cc
+index e9b0d33..e80e5e6 100644
+--- a/l11/kernel.cc
++++ b/l11/kernel.cc
+@@ -56,6 +56,9 @@ void kernel(const char* command) {
+     // initialize hardware
+     init_hardware();
+ 
++    // enable timer interrupt
++    init_timer(1000);
++
+     // clear screen
+     console_clear();
+ 
+@@ -190,6 +193,10 @@ void exception(regstate* regs) {
+         goto unhandled;
+     }
+ 
++    case 32:
++        lapicstate::get().ack();
++        schedule();
++
+     default:
+     unhandled:
+         panic("Unexpected exception %d!\n", regs->reg_intno);

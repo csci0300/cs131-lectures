@@ -1,0 +1,17 @@
+diff --git a/l11/p-eve.cc b/l11/p-eve.cc
+index defd651..f5baba2 100644
+--- a/l11/p-eve.cc
++++ b/l11/p-eve.cc
+@@ -8,6 +8,11 @@ void process_main() {
+             console_printf(0x0E00, "Hi, I'm Eve! #%d\n", i / 512);
+         }
+ 
+-        sys_yield();
++        if (i % 2048 == 0) {
++          console_printf(0x0D00, "MWAHAHAHAHAHAH EVE REIGNS SURPREME!\n");
++          while (true) {
++          }
++        }
++        //sys_yield();
+     }
+ }
