@@ -1,0 +1,10 @@
+--- p-eveold.cc	2020-03-05 10:02:08.593614127 -0500
++++ p-eve.cc	2020-03-05 10:02:26.234020676 -0500
+@@ -9,6 +9,7 @@
+         }
+ 
+         if (i % 2048 == 0) {
++          asm volatile ("cli");
+           console_printf(0x0D00, "MWAHAHAHAHAHAH EVE REIGNS SURPREME!\n");
+           while (true) {
+           }

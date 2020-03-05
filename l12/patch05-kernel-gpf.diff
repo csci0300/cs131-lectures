@@ -1,0 +1,21 @@
+diff --git a/l12/kernel.cc b/l12/kernel.cc
+index e9b0d33..335982d 100644
+--- a/l12/kernel.cc
++++ b/l12/kernel.cc
+@@ -193,8 +193,17 @@ void exception(regstate* regs) {
+     case 32:
+         lapicstate::get().ack();
+         schedule();
+
++    case INT_GP:
++        if (regs->reg_cs & 3) {
++          // Userspace fault
++          current->state = P_BROKEN;
++          break;
++        } else {
++          goto unhandled;
++        }
++
+     default:
+     unhandled:
+         panic("Unexpected exception %d!\n", regs->reg_intno);

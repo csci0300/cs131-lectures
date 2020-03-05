@@ -1,0 +1,26 @@
+diff --git a/l12/kernel.cc b/l12/kernel.cc
+index e80e5e6..a689dc4 100644
+--- a/l12/kernel.cc
++++ b/l12/kernel.cc
+@@ -67,8 +67,10 @@ void kernel(const char* command) {
+     for (vmiter it(kernel_pagetable);
+          it.va() < MEMSIZE_PHYSICAL;
+          it += PAGESIZE) {
+-        if (it.va() != 0) {
++        if (it.va() >= PROC_START_ADDR || it.va() == CONSOLE_ADDR) {
+             it.map(it.va(), PTE_P | PTE_W | PTE_U);
++        } else if (it.va() != 0) {
++            it.map(it.va(), PTE_P | PTE_W);
+         } else {
+             it.map(it.va(), 0);
+         }
+@@ -187,7 +189,8 @@ void exception(regstate* regs) {
+         console_printf(COLOR_ERROR,
+               "%s %d page fault on %p (%s %s, rip=%p)!\n",
+               entity, current->pid, addr, operation, problem, regs->reg_rip);
+-        goto unhandled;
++        current->state = P_BROKEN;
++        break;
+     }
+
+     case 32:

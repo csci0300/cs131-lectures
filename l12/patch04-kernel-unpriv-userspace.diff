@@ -1,0 +1,14 @@
+diff --git a/l12/kernel.cc b/l12/kernel.cc
+index e9b0d33..d028f01 100644
+--- a/l12/kernel.cc
++++ b/l12/kernel.cc
+@@ -134,9 +137,6 @@ void process_setup(pid_t pid, const char* program_name) {
+     pages[stack_addr / PAGESIZE].refcount = 1;
+     ptable[pid].regs.reg_rsp = stack_addr + PAGESIZE;
+
+-    // allow process to control interrupts
+-    ptable[pid].regs.reg_rflags |= EFLAGS_IOPL_3;
+-
+     // mark process as runnable
+     ptable[pid].state = P_RUNNABLE;
+ }

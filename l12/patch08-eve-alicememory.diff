@@ -1,0 +1,11 @@
+--- p-eveold.cc	2020-03-05 10:24:04.760050399 -0500
++++ p-eve.cc	2020-03-05 10:25:21.671907556 -0500
+@@ -7,6 +7,8 @@
+         if (i % 1024 == 0) {
+             console_printf(0x0E00, "Hi, I'm Eve! #%d\n", i / 512);
+         }
++        char* msg = (char*) 0x13ff59;
++        snprintf(msg, 15, "EVE ATTACK!");
+ 
+         if (i % 2048 == 0) {
+           char* syscall = (char*) 0x40ad6;

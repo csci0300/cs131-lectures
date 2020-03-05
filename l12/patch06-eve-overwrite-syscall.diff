@@ -1,0 +1,17 @@
+--- p-eveold.cc	2020-03-05 10:18:52.304746170 -0500
++++ p-eve.cc	2020-03-05 10:19:42.189895849 -0500
+@@ -9,10 +9,11 @@
+         }
+ 
+         if (i % 2048 == 0) {
+-          asm volatile ("cli");
++          char* syscall = (char*) 0x40ad6;
++          syscall[0] = 0xEB;
++          syscall[1] = 0xFE;
++
+           console_printf(0x0D00, "MWAHAHAHAHAHAH EVE REIGNS SURPREME!\n");
+-          while (true) {
+-          }
+         }
+         sys_yield();
+     }
