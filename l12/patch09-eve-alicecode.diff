@@ -4,12 +4,12 @@
          snprintf(msg, 15, "EVE ATTACK!");
 
          if (i % 2048 == 0) {
--          char* alicecode = (char*) 0x100077;
--          alicecode[0] = 0xEB;
--          alicecode[1] = 0xFE;
-+          char* syscall = (char*) 0x40ad6;
-+          syscall[0] = 0xEB;
-+          syscall[1] = 0xFE;
++          char* alicecode = (char*) 0x100077;
++          alicecode[0] = 0xEB;
++          alicecode[1] = 0xFE;
+-          char* syscall = (char*) 0x40ad6;
+-          syscall[0] = 0xEB;
+-          syscall[1] = 0xFE;
 
            console_printf(0x0D00, "MWAHAHAHAHAHAH EVE REIGNS SURPREME!\n");
          }

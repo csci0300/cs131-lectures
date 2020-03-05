@@ -5,6 +5,6 @@
 
          if (i % 2048 == 0) {
 +          asm volatile ("cli");
-           console_printf(0x0D00, "MWAHAHAHAHAHAH EVE REIGNS SURPREME!\n");
+           console_printf(0x0E00, "MWAHAHAHAHAHAH EVE REIGNS SURPREME!\n");
            while (true) {
            }

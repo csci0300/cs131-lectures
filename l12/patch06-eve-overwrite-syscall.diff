@@ -9,7 +9,7 @@
 +          syscall[0] = 0xEB;
 +          syscall[1] = 0xFE;
 +
-           console_printf(0x0D00, "MWAHAHAHAHAHAH EVE REIGNS SURPREME!\n");
+           console_printf(0x0E00, "MWAHAHAHAHAHAH EVE REIGNS SURPREME!\n");
 -          while (true) {
 -          }
          }
