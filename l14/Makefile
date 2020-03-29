@@ -1,4 +1,4 @@
-PROGRAMS = fork1 fork2 fork2b forkmix-syscall forkmix-stdio
+PROGRAMS = fork1 fork2 fork2b fork3 forkmix-syscall forkmix-stdio
 
 all: $(PROGRAMS)
 
