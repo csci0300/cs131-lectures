@@ -1,5 +1,5 @@
-PROGRAMS = selfpipe childpipe fork-process fork-thread std-thread \
-					 incr-basic incr-basic.noopt incr-atomic
+PROGRAMS = selfpipe childpipe pipesizer fork-process fork-thread std-thread \
+           incr-basic incr-basic.noopt incr-atomic
 
 all: $(PROGRAMS)
 
