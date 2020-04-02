@@ -9,19 +9,19 @@ int main() {
     assert(p1 >= 0);
 
     if (p1 == 0) {
-        const char* message = "Hello, mama!\n";
+        // child process
+        const char* message = "Hello, mama!";
+        printf("[child: %d] sending message\n", getpid());
         ssize_t nw = write(pipefd[1], message, strlen(message));
         assert(nw == (ssize_t) strlen(message));
         exit(0);
     }
 
-    FILE* f = fdopen(pipefd[0], "r");
-    while (!feof(f)) {
-        char buf[BUFSIZ];
-        if (fgets(buf, BUFSIZ, f) != nullptr) {
-            printf("I got a message! It was “%s”\n", buf);
-        }
+    char buf[BUFSIZ];
+    if (read(pipefd[0], buf, BUFSIZ) > 0) {
+        printf("[parent: %d] I got a message! It was “%s”\n", getpid(), buf);
     }
-    printf("No more messages :(\n");
-    fclose(f);
+
+    close(pipefd[0]);
+    close(pipefd[1]);
 }
