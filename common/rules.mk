@@ -1,14 +1,52 @@
-# are we using clang?
-ISCLANG := $(shell if $(CC) --version | grep -e 'LLVM\|clang' >/dev/null; then echo 1; fi)
-ISLINUX := $(if $(wildcard /usr/include/linux/*.h),1,)
-
+# compiler flags
 CFLAGS := -std=gnu11 -W -Wall -Wshadow -g $(DEFS) $(CFLAGS)
 CXXFLAGS := -std=gnu++17 -W -Wall -Wshadow -g $(DEFS) $(CXXFLAGS)
+
 O ?= -O3
 ifeq ($(filter 0 1 2 3 s,$(O)),$(strip $(O)))
 override O := -O$(O)
 endif
 
+PTHREAD ?= 0
+ifeq ($(PTHREAD),1)
+CFLAGS += -pthread
+CXXFLAGS += -pthread
+WANT_TSAN ?= 1
+endif
+
+PIE ?= 1
+ifeq ($(PIE),0)
+LDFLAGS += -no-pie
+endif
+
+# compiler variant
+ifeq ($(COMPILER),clang)
+ifeq ($(origin CC),default)
+ifeq ($(shell if clang --version | grep -e 'LLVM\|clang' >/dev/null; then echo 1; else echo 0; fi),1)
+CC = clang
+endif
+endif
+ifeq ($(origin CXX),default)
+ifeq ($(shell if clang++ --version | grep -e 'LLVM\|clang' >/dev/null; then echo 1; else echo 0; fi),1)
+CXX = clang++
+endif
+endif
+endif
+ifeq ($(COMPILER),gcc)
+ifeq ($(origin CC),default)
+ifeq ($(shell if gcc --version | grep -e 'Free Software' >/dev/null; then echo 1; else echo 0; fi),1)
+CC = gcc
+endif
+endif
+ifeq ($(origin CXX),default)
+ifeq ($(shell if g++ --version | grep -e 'Free Software' >/dev/null; then echo 1; else echo 0; fi),1)
+CXX = g++
+endif
+endif
+endif
+ISCLANG := $(shell if $(CC) --version | grep -e 'LLVM\|clang' >/dev/null; then echo 1; else echo 0; fi)
+
+# sanitizer arguments
 ifndef SAN
 SAN := $(SANITIZE)
 endif
@@ -31,7 +69,7 @@ CFLAGS += -fsanitize=address
 CXXFLAGS += -fsanitize=address
   endif
  endif
- ifeq ($(LEAKSAN),1)
+ ifeq ($(or $(LSAN),$(LEAKSAN)),1)
   ifeq ($(call check_for_sanitizer,leak),1)
 CFLAGS += -fsanitize=leak
 CXXFLAGS += -fsanitize=leak
@@ -43,6 +81,12 @@ ifeq ($(or $(UBSAN),$(SAN)),1)
 CFLAGS += -fsanitize=undefined
 CXXFLAGS += -fsanitize=undefined
  endif
+endif
+
+# profiling
+ifeq ($(or $(PROFILE),$(PG)),1)
+CFLAGS += -pg
+CXXFLAGS += -pg
 endif
 
 # these rules ensure dependencies are created
@@ -58,8 +102,8 @@ endif
 ifneq ($(strip $(DEP_CC)),$(strip $(CC) $(CPPFLAGS) $(CFLAGS) $(O)))
 DEP_CC := $(shell mkdir -p $(DEPSDIR); echo >$(BUILDSTAMP); echo "DEP_CC:=$(CC) $(CPPFLAGS) $(CFLAGS) $(O)" >$(DEPSDIR)/_cc.d)
 endif
-ifneq ($(strip $(DEP_CXX)),$(strip $(CXX) $(CPPFLAGS) $(CXXFLAGS) $(O)))
-DEP_CXX := $(shell mkdir -p $(DEPSDIR); echo >$(BUILDSTAMP); echo "DEP_CXX:=$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(O)" >$(DEPSDIR)/_cxx.d)
+ifneq ($(strip $(DEP_CXX)),$(strip $(CXX) $(CPPFLAGS) $(CXXFLAGS) $(O) $(LDFLAGS)))
+DEP_CXX := $(shell mkdir -p $(DEPSDIR); echo >$(BUILDSTAMP); echo "DEP_CXX:=$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(O) $(LDFLAGS)" >$(DEPSDIR)/_cxx.d)
 endif
 
 
@@ -71,6 +115,7 @@ else
 run = @$(if $(2),/bin/echo "  $(2) $(3)" &&,) $(1) $(3)
 xrun = $(if $(2),/bin/echo "  $(2) $(3)" &&,) $(1) $(3)
 endif
+runquiet = @$(1) $(3)
 
 CLEANASM = 1
 ifeq ($(CLEANASM),1)
