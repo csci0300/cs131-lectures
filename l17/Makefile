@@ -1,6 +1,5 @@
 PROGRAMS = fork-process fork-thread std-thread \
-           incr-basic incr-basic.noopt incr-atomic \
-					 bbuffer-basic bbuffer-scoped
+           incr-basic incr-basic.noopt incr-atomic
 
 all: $(PROGRAMS)
 
