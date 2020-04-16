@@ -66,7 +66,7 @@ int main() {
       }
       p[i].id = i;
       p[i].next = &p[(i + 1) % NUM_PLAYERS];
-      p[i].prev = &p[(i - 1) % NUM_PLAYERS];
+      p[i].prev = &p[(i + NUM_PLAYERS - 1) % NUM_PLAYERS];
     }
 
     for (int i = 0; i < NUM_PLAYERS; i++) {
