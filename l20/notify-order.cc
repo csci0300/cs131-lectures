@@ -17,7 +17,7 @@ void print_threadfunc(int my_number) {
   // ok to read shared state in condition as we hold the
   // lock on m
   while (last_printed != my_number - 1) {
-    printf("%d checking if its turn has come\n", my_number);
+    printf("%d woke, but its turn hasn't come yet\n", my_number);
     is_it_my_turn_cv.wait(guard);
   }
 
