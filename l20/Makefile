@@ -1,4 +1,4 @@
-PROGRAMS = bbuffer-cond passtheball passtheball-mutex passtheball-cond passtheball-atomic passtheball-deadlock notify-order
+PROGRAMS = bbuffer-cond passtheball passtheball-mutex passtheball-cond passtheball-atomic passtheball-deadlock passtheball-fixed notify-order
 
 all: $(PROGRAMS)
 
