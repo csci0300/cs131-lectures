@@ -43,16 +43,14 @@ void player_threadfunc(Player* me) {
     while (!me->has_ball) {
       me->has_ball_cv.wait(guard);
     }
-    if (me->has_ball) {
-      Player* to;
-      if (rand() % 2 == 1) {
-        to = me->next;
-      } else {
-        to = me->prev;
-      }
-      me->pass(to);
-      to->has_ball_cv.notify_one();
+    Player* to;
+    if (rand() % 2 == 1) {
+      to = me->next;
+    } else {
+      to = me->prev;
     }
+    me->pass(to);
+    to->has_ball_cv.notify_one();
   }
 }
 

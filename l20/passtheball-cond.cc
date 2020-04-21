@@ -38,10 +38,8 @@ void player_threadfunc(Player* me) {
     while (!me->has_ball) {
       me->has_ball_cv.wait(guard);
     }
-    if (me->has_ball) {
-      me->pass(me->next);
-      me->next->has_ball_cv.notify_one();
-    }
+    me->pass(me->next);
+    me->next->has_ball_cv.notify_one();
   }
 }
 
