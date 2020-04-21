@@ -38,19 +38,15 @@ void player_threadfunc(Player* me) {
   printf("P%u joins the game!\n", me->id);
   while (true) {
     std::unique_lock<std::mutex> guard(me->m);
-
     while (!me->has_ball) {
       me->has_ball_cv.wait(guard);
     }
-
-    int direction = rand() % 2;
     Player* to;
-    if (direction == 0) {
+    if (rand() % 2) {
       to = me->next;
     } else {
       to = me->prev;
     }
-
     // lock order: lower ID first
     if (to->id < me->id) {
       to->m.lock();
@@ -60,7 +56,6 @@ void player_threadfunc(Player* me) {
         continue;
       }
     }
-
     // we hold both locks here
     me->pass(to);
     to->m.unlock();
