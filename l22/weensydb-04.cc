@@ -76,7 +76,6 @@ void handle_connection(int cfd) {
             // find item; insert if missing
             auto b = string_hash(key) % NBUCKETS;
             hash_mutex[b].lock();
-            std::scoped_lock lock(hash_mutex[b]);
             auto it = hfind(hash[b], key);
             if (it == hash[b].end()) {
                 it = hash[b].insert(it, hash_item(key));
@@ -185,7 +184,7 @@ int main(int argc, char** argv) {
 
         // At most 100 threads at a time
         std::unique_lock<std::mutex> guard(thread_mutex);
-        while (nthreads == 100) {
+        while (nthreads == 8) {
             thread_cv.wait(guard);
         }
         ++nthreads;

@@ -72,7 +72,6 @@ void handle_connection(int cfd) {
             // find item; insert if missing
             auto b = string_hash(key) % NBUCKETS;
             hash_mutex[b].lock();
-            std::scoped_lock lock(hash_mutex[b]);
             auto it = hfind(hash[b], key);
             if (it == hash[b].end()) {
                 it = hash[b].insert(it, hash_item(key));
