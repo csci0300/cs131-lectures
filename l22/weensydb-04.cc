@@ -182,7 +182,7 @@ int main(int argc, char** argv) {
             exit(1);
         }
 
-        // At most 100 threads at a time
+        // At most 8 threads at a time
         std::unique_lock<std::mutex> guard(thread_mutex);
         while (nthreads == 8) {
             thread_cv.wait(guard);
