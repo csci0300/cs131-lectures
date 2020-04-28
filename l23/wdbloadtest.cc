@@ -3,11 +3,13 @@
 #include <csignal>
 #include <cstdlib>
 #include <vector>
+#include <atomic>
 #include "helpers.hh"
 
 volatile std::sig_atomic_t done = false;
-bool verbose;
 int num_threads = 2;
+
+std::atomic<long> total_req;
 
 void usage(int exit_status) {
   fprintf(stderr, "Usage: wdbloadtest [-v] [-t NUM_CLIENTS]\n");
@@ -61,7 +63,6 @@ void generate_load(int i, const char* host, const char* port) {
   }
 
   int nloops = 0;
-  int start = tstamp();
   while (!done) {
     int which = rand() % (num_threads * 2);
     if (which % 2 == 0) {
@@ -73,9 +74,8 @@ void generate_load(int i, const char* host, const char* port) {
 
     fgets(buf, BUFSIZ, f);
 
-    if (verbose && nloops % 10000 == 0) {
-      double cur = tstamp() - start;
-      fprintf(stdout, "%f req/s\r\n", ((double) nloops) / cur);
+    if (nloops % 10000 == 0) {
+      total_req.fetch_add(10000);
     }
 
     nloops++;
@@ -104,8 +104,6 @@ int main(int argc, char** argv) {
       host = optarg;
     } else if (opt == 'p') {
       port = optarg;
-    } else if (opt == 'v') {
-      verbose = true;
     } else if (opt == 't') {
       num_threads = atoi(optarg);
     }
@@ -115,6 +113,14 @@ int main(int argc, char** argv) {
   for (int i = 0; i < num_threads; ++i) {
     std::thread* t = new std::thread(generate_load, i, host, port);
     threads.push_back(t);
+  }
+
+  int start = tstamp();
+  while (!done) {
+    double cur = tstamp() - start;
+    fprintf(stdout, "%f req/s from %d threads\r\n",
+            ((double) total_req.load()) / cur, num_threads);
+    sleep(1);
   }
 
   for (auto it = threads.begin(); it != threads.end(); it++) {
